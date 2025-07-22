@@ -15,15 +15,21 @@
   <button id="sendButton">Send</button>
 
   <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const isCaller = urlParams.get('caller') === 'true';
+
+    if (urlParams.get('caller') === null) {
+      alert('Please specify ?caller=true or ?caller=false in the URL');
+    }
+
+    console.log("Caller:", isCaller);
+
     const signalingServer = 'wss://p2p-chat-server-o3k8.onrender.com';
     const socket = new WebSocket(signalingServer);
 
     const pc = new RTCPeerConnection();
-    const isCaller = Math.random() < 0.5;
     let dataChannel;
     let dataChannelOpen = false;
-
-    console.log("Caller:", isCaller);
 
     function log(msg) {
       const messages = document.getElementById('messages');
